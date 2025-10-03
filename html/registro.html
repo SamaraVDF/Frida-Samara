@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="../style/style2.css">
+</head>
+<body>
+    <main>
+        <h2>   Registrarse</h2>
+        <section>
+            <form id="registroUsuarioForm" class="formulario">
+
+                <label>Ingrese su nombre</label>
+                <input type="text" name="nombre" required>
+
+                <label>Ingrese su apellido</label>
+                <input type="text" name="apellido" required>
+
+                <label>Ingrese su edad</label>
+                <input type="number" name="edad" required>
+
+                <label>Ingrese su teléfono</label>
+                <input type="text" name="telefono" required>
+
+                <label>Ingrese su contraseña</label>
+                <input type="password" name="password" required>
+
+                <button type="submit">Registrarse</button>
+                <a href="../html/index.html">Volver</a>
+            </form>
+
+        </section>
+    </main>
+
+<script>
+    document.getElementById("registroUsuarioForm").addEventListener("submit", async function(e) {
+        e.preventDefault(); // Evita el envío normal del formulario
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        let response = await fetch("http://localhost/api/index.php/usuario/registrar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        let result = await response.json();
+        console.log(result);
+    });
+</script>
+</body>
+</html>

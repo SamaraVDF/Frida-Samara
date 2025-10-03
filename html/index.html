@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../style/style1.css">
+</head>
+<body>
+    <header>
+        <h1>BIENVENIDO</h1>
+    </header>
+    
+    <nav>
+        <a href="../html/loginEmpleado.html">Login Empleado</a>
+    </nav>
+
+    <main>
+        <section id="login">
+            <h2>LOGIN</h2>
+            <form id="loginUsuarioForm">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" name="usuario">
+                <label for="password">Contraseña</label>
+                <input type="text" id="password" name="password">
+                <button type="submit">Entrar</button>
+            </form>
+            <p id="mensaje"></p>
+            <a href="../html/registro.html">Registro Usuario</a>
+            <a href="../html/registroEmpleado.html">Registro Empleado</a>
+        </section>
+    </main>
+
+    <script>
+    document.getElementById("loginUsuarioForm").addEventListener("submit", async function(e) {
+        e.preventDefault(); 
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        let response = await fetch("http://localhost/api/index.php/usuario/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        let result = await response.json();
+        console.log(result);
+        if (result.ok) {
+            // Guardamos el idUsuario en localStorage
+            localStorage.setItem("idUsuario", result.user.idUsuario);
+
+            // Redirigimos al perfil
+            window.location.href = "../html/Usuario/perfil.html";
+        } else {
+            document.getElementById("mensaje").innerText = "Error: " + result.error;
+        }
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+    <html lang="es">
+    <head>
+    <meta charset="UTF-8">
+    <title>Perfil Empleado</title>
+    <link rel="stylesheet" href="../../style/style4.css">
+</head>
+<body>
+
+    <nav>
+        <a href="productosEmpleado.html">Productos</a>
+    </nav>
+    <main>
+    <h2>Datos del Empleado</h2>
+    <div id="datosUsuarioEmpleado"></div>
+    <a href="../index.html">Salir</a>
+    </main>
+<script>
+    async function cargarEmpleado() {
+    const idEmpleado = localStorage.getItem("idEmpleado"); 
+
+      // 
+        console.log("ID guardado:", idEmpleado);
+
+        let response = await fetch("http://localhost/api/index.php/empleado/datos?id=" + idEmpleado, {
+            method: "GET"
+        });
+
+        let data = await response.json();
+        console.log("Respuesta del backend:", data);
+
+        if (data.ok) {
+            document.getElementById("datosUsuarioEmpleado").innerHTML = `
+            <p><b>Nombre:</b> ${data.empleado.nombre}</p>
+            <p><b>Apellido:</b> ${data.empleado.apellido}</p>
+            <p><b>Puesto:</b> ${data.empleado.puesto}</p>
+        `;
+        } else {
+            document.getElementById("datosUsuarioEmpleado").innerHTML = `<p style="color:red">${data.error}</p>`;
+        }
+    }
+
+    cargarEmpleado();
+</script>
+</body>
+</html>

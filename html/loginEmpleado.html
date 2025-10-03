@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoginEmpleado</title>
+    <link rel="stylesheet" href="../style/style3.css">
+</head>
+<body>
+    
+    <header>
+        <h1>Bienvenido</h1>
+    </header>
+
+    <main>
+        <form id="loginEmpleado" >
+            <label for="usuario">Usuario</label>
+            <input type="text" name="usuario" id="usuario">
+            <label for="password">Contraseña</label>
+            <input type="text" name="password" id="password">
+            <button type="submit">Entrar</button>
+            <a href="../html/index.html">Volver</a>
+        </form>
+    
+
+    </main>
+
+        <script>
+    document.getElementById("loginEmpleado").addEventListener("submit", async function(e) {
+        e.preventDefault(); // Evita el envío normal del formulario
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        let response = await fetch("http://localhost/api/index.php/empleado/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        let result = await response.json();
+        console.log(result);
+        if (result.ok) {
+            // Guardamos el idUsuario en localStorage
+            localStorage.setItem("idEmpleado", result.user.idEmpleado);
+
+            // Redirigimos al perfil
+            window.location.href = "../html/Empleado/perfilEmpleado.html";
+        } else {
+            document.getElementById("mensaje").innerText = "Error: " + result.error;
+        }
+    });
+</script>
+</body>
+</html>

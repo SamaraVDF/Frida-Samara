@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" href="../../style/style5.css">
+</head>
+<body>
+    <nav>
+        <a href="../index.html">Salir</a>
+        <a href="perfilEmpleado.html">Perfil</a>
+    </nav>
+    <main>
+        <h2>Productos</h2>
+        <!--ELIMINAR-->
+        <h3>Eliminar producto</h3>
+        <form  id="Eliminar">
+        <input type="text" name="nombre" id="nombre" placeholder="Ingrese el nombre">
+        <button type="submit">Borrar</button>
+        </form>
+
+        <!--MODIFICAR PRECIO-->
+        <h3>Modificar precio </h3>
+        <form id="ModificarPrecio">
+        <label for="nombre1">Nombre</label>
+        <input type="text" name="nombre1" id="nombre1" placeholder="Ingrese el nombre">
+        <label for="precio">Precio</label>
+        <input type="text" name="precio" id="precio" placeholder="Ingrese el precio">
+        <button type="submit">Actualizar</button>
+        </form>
+
+        <!--MODIFICAR CANTIDAD-->
+        <h3>Modificar cantidad</h3>
+        <form id="ModificarCantidad">
+        <label for="nombre2">Nombre</label>
+        <input type="text" name="nombre2" id="nombre2" placeholder="Ingrese el nombre" >
+        <input type="number" name="cantidad" id="cantidad" placeholder="Ingrese la cantidad">
+        <button type="submit">Actualizar</button>
+        </form>
+
+        <!--REGISTRAR PRODUCTO-->
+        <h3>Registrar nuevo producto</h3>
+        <form id="Registrar">
+            <label for="nombre3">Nombre</label>
+            <input type="text" name="nombre3" id="nombre3">
+            <label for="precio3">Precio</label>
+            <input type="text" name="precio3" id="precio3">
+            <label for="categoria3">categoria</label>
+            <input type="text" name="categoria3" id="categoria3">
+            <label for="cantidad3">Cantidad</label>
+            <input type="text" name="cantidad3" id="cantidad3">
+            <button type="submit">Registrar</button>
+        </form>
+
+        <div id="Productos"></div>
+    </main>
+
+    <script>
+        //  Mostrar todos los productos al cargar
+    async function cargarProductos() {
+        let response = await fetch("http://localhost/api/index.php/productos/datos");
+        let data = await response.json();
+        console.log("Respuesta backend:", data);
+
+        const contenedor = document.getElementById("Productos");
+
+        if (data.ok) {
+        let html = "";
+        data.productos.forEach(p => {
+            html += `
+            <div class="producto">
+                <h4>${p.nombre}</h4>
+                <p>Precio: $${p.precio}</p>
+                <p>Categoría: ${p.categoria}</p>
+                <p>Cantidad: ${p.cantidad}</p>
+            </div>`;
+        });
+        contenedor.innerHTML = html;
+        } else {
+        contenedor.innerHTML = `<p style="color:red">${data.error}</p>`;
+    }
+    }
+
+    /*ELIMINAR PRODUCTO*/
+    document.getElementById("Eliminar").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const nombre = document.getElementById("nombre").value;
+
+    let response = await fetch("http://localhost/api/index.php/productos/borrar", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre: nombre })
+    });
+
+    let data = await response.json();
+    const contenedor = document.getElementById("Productos");
+
+    if (data.ok) {
+        contenedor.innerHTML = `<p style="color:green">${data.message}</p>`;
+        cargarProductos(); 
+    } else {
+        contenedor.innerHTML = `<p style="color:red">${data.message}</p>`;
+    }
+});
+
+
+    /** ACTUALIZAR PRODUCTO--PRECIO */
+    document.getElementById("ModificarPrecio").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const nombre = document.getElementById("nombre1").value;
+    const precio = parseFloat(document.getElementById("precio").value);
+
+    let response = await fetch("http://localhost/api/index.php/productos/actualizarPrecio", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre: nombre, precio: precio })
+    });
+
+    let data = await response.json();
+    const contenedor = document.getElementById("Productos");
+
+    if (data.ok) {
+        contenedor.innerHTML = `<p style="color:green">${data.message}</p>`;
+        cargarProductos();
+    } else {
+        contenedor.innerHTML = `<p style="color:red">${data.error || data.message}</p>`;
+    }
+    });
+
+    /**ACTUALIZAR PRODUCTO--CANTIDAD */
+    document.getElementById("ModificarCantidad").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const nombre = document.getElementById("nombre2").value;
+    const cantidad = parseFloat(document.getElementById("cantidad").value);
+
+    let response = await fetch("http://localhost/api/index.php/productos/actualizarCantidad", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre: nombre, cantidad: cantidad})
+    });
+
+    let data = await response.json();
+    const contenedor = document.getElementById("Productos");
+
+    if (data.ok) {
+        contenedor.innerHTML = `<p style="color:green">${data.message}</p>`;
+        cargarProductos();
+    } else {
+        contenedor.innerHTML = `<p style="color:red">${data.error || data.message}</p>`;
+    }
+    });
+
+    /*REGISTRAR PRODUCTO*/
+   document.getElementById("Registrar").addEventListener("submit",async function(e) {
+        e.preventDefault();
+        const nombre=document.getElementById("nombre3").value;
+        const precio=parseFloat(document.getElementById("precio3").value)
+        const categoria=document.getElementById("categoria3").value;
+        const cantidad=parseInt(document.getElementById("cantidad3").value);
+
+        let response = await fetch("http://localhost/api/index.php/productos/registrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre: nombre, precio:precio, categoria:categoria, cantidad: cantidad})
+    });
+
+    let data = await response.json();
+    const contenedor = document.getElementById("Productos");
+    if (data.ok) {
+        let html = "";
+        data.productos.forEach(p => {
+            html += `
+            <div class="producto">
+                <h4>${p.nombre}</h4>
+                <p>Precio: $${p.precio}</p>
+                <p>Categoría: ${p.categoria}</p>
+                <p>Cantidad: ${p.cantidad}</p>
+            </div>`;
+        });
+        contenedor.innerHTML = html;
+        } else {
+        contenedor.innerHTML = `<p style="color:red">${data.error}</p>`;
+    }
+    })
+
+    // cargar todo al entrar
+    cargarProductos();
+    </script>
+</body>
+</html>

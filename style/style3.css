@@ -1,0 +1,136 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #e6f2ff; /* azulito claro */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+header {
+    width: 100%;
+    background-color: #0d2740; /* azul marino */
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+nav {
+    width: 100%;
+    background-color: #163c61; /* azul intermedio */
+    text-align: center;
+    padding: 10px 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    font-size: 15px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #66c2ff;
+}
+
+
+#loginEmpleado {
+    background-color: #fff;
+    padding: 30px 25px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
+    width: 350px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+
+#loginEmpleado h2 {
+    margin-bottom: 20px;
+    color: #0d2740;
+    font-size: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+
+#loginEmpleado label {
+    text-align: left;
+    display: block;
+    margin: 5px 0 3px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+#loginEmpleado input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    margin-bottom: 15px;
+}
+
+#loginEmpleado input:focus {
+    border-color: #0d2740;
+    box-shadow: 0px 0px 5px rgba(13, 39, 64, 0.3);
+}
+
+
+#loginEmpleado button {
+    background-color: #0d2740;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+#loginEmpleado button:hover {
+    background-color: #163c61;
+}
+
+
+#mensaje {
+    margin-top: 10px;
+    font-size: 14px;
+    color: red;
+}
+
+
+#loginEmpleado a {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #0d2740;
+    font-size: 14px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+#loginEmpleado a:hover {
+    color: #1a5d9b;
+}
+
+

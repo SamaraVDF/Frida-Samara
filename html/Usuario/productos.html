@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" href="../../style/style5.css">
+</head>
+<body>
+    <nav>
+        <a href="perfil.html">Regresar</a>
+        <a href="venta.html">Comprar</a>
+        <a href="../index.html">Salir</a>
+    </nav>
+    <main>
+        <h2>Productos</h2>
+        <h3>Filtros</h3>
+        
+        <!-- Buscar por nombre -->
+        <form id="buscarForm">
+            <input type="text" name="nombre" id="nombre" placeholder="Escribe el nombre del producto">
+            <button type="submit">Buscar por nombre</button>
+        </form>
+
+        <!-- Buscar por categoria -->
+        <form id="buscar1Form">
+            <input type="text" name="categoria" id="categoria" placeholder="Escribe la categoria">
+            <button type="submit">Buscar por categoría</button>
+        </form>
+
+        <!-- Buscar por precio -->
+        <form id="buscar2Form">
+            <input type="text" name="precio" id="precio" placeholder="Escribe el precio">
+            <button type="submit">Filtrar por precio</button>
+        </form>
+
+
+        <div id="Productos">
+        </div>
+    </main>
+
+<script>
+
+    //  Mostrar todos los productos al cargar
+    async function cargarProductos() {
+        let response = await fetch("http://localhost/api/index.php/productos/datos");
+        let data = await response.json();
+        console.log("Respuesta backend:", data);
+
+        const contenedor = document.getElementById("Productos");
+
+        if (data.ok) {
+        let html = "";
+        data.productos.forEach(p => {
+            html += `
+        <div class="producto">
+            <h4>${p.nombre}</h4>
+            <p>Categoría: ${p.categoria}</p>
+            <p>Precio: $${p.precio}</p>
+            <p>Cantidad: ${p.cantidad}</p>
+            <p>Id: ${p.Id}</p>
+        </div>
+        `;
+        });
+        contenedor.innerHTML = html;
+        } else {
+        contenedor.innerHTML = `<p style="color:red">${data.error}</p>`;
+    }
+    }
+
+
+    // Buscar por nombre 
+    document.getElementById("buscarForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const nombre = document.getElementById("nombre").value;
+
+        let response = await fetch("http://localhost/api/index.php/productos/buscarPorNombre", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre: nombre })
+        });
+
+        let data = await response.json();
+        const contenedor = document.getElementById("Productos");
+
+        if (data.ok) {
+        let html = "";
+        data.productos.forEach(p => {
+            html += `
+            <div class="producto">
+                <h4>${p.nombre}</h4>
+                <p>Precio: $${p.precio}</p>
+                <p>Categoría: ${p.categoria}</p>
+            </div>`;
+        });
+        contenedor.innerHTML = html;
+        } else {
+        contenedor.innerHTML = `<p style="color:red">${data.error}</p>`;
+    }
+    });
+
+    //  Buscar por categoría
+    document.getElementById("buscar1Form").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const categoria = document.getElementById("categoria").value;
+
+        let response = await fetch("http://localhost/api/index.php/productos/buscarPorCategoria", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ categoria:categoria })
+        });
+        let data = await response.json();   
+        const contenedor = document.getElementById("Productos");
+
+        if (data.ok) {
+        let html = "";
+        data.productos.forEach(p => {
+            html += `
+            <div class="producto">
+                <h4>${p.nombre}</h4>
+                <p>Precio: $${p.precio}</p>
+            </div>`;
+        });
+        contenedor.innerHTML = html;
+        } else {
+        contenedor.innerHTML = `<p style="color:red">${data.error}</p>`;
+    }
+    });
+
+    //  Filtrar por precio 
+    document.getElementById("buscar2Form").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const precio = document.getElementById("precio").value;
+
+        let response = await fetch("http://localhost/api/index.php/productos/filtradoDePrecio", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ precio:precio })
+        });;
+
+        let data = await response.json();   
+        const contenedor = document.getElementById("Productos");
+
+        if (data.ok) {
+        let html = "";
+        data.productos.forEach(p => {
+            html += `
+            <div class="producto">
+                <h4>${p.nombre}</h4>
+                <p>Categoría: ${p.categoria}</p>
+            </div>`;
+        });
+        contenedor.innerHTML = html;
+        } else {
+        contenedor.innerHTML = `<p style="color:red">${data.error}</p>`;
+    }
+
+    });
+
+    // cargar todo al entrar
+    cargarProductos();
+</script>
+</body>
+</html>

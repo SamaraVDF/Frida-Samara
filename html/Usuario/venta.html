@@ -1,0 +1,125 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+    <meta charset="UTF-8">
+    <title>Ventas</title>
+    <link rel="stylesheet" href="../../style/style5.css">
+    </head>
+    <body>
+    <h1>Registrar Venta</h1>
+    <nav>
+        <a href="productos.html">Pefil</a>
+        <a href="perfil.html">Productos</a>
+        <a href="../index.html">Salir</a>
+    </nav>
+
+    <form id="ventaForm">
+        <label>ID Producto:</label>
+        <input type="number" id="idProducto"><br><br>
+
+        <label>Cantidad:</label>
+        <input type="number" id="cantidad"><br><br>
+
+        <button type="button" onclick="agregarProducto()">Agregar Producto</button>
+        <button type="submit">Crear Venta</button>
+    </form>
+
+    <h3>Productos en la venta</h3>
+    <ul id="listaProductos"></ul>
+
+    <hr>
+
+    <h2>Ventas Registradas</h2>
+    <button onclick="mostrarVentas()">Actualizar lista</button>
+    <table border="1" id="tablaVentas">
+        <thead>
+        <tr>
+            <th>ID Venta</th>
+            <th>Total</th>
+            <th>ID Producto</th>
+            <th>Cantidad</th>
+            <th>Nombre</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        let items = [];
+
+        // Agregar producto a la venta
+        function agregarProducto() {
+        const id = document.getElementById('idProducto').value;
+        const cantidad = document.getElementById('cantidad').value;
+
+        if (!id || !cantidad) {
+            alert("Completa ID y cantidad");
+            return;
+        }
+
+        items.push({ id: id, cantidad: cantidad });
+
+        // Mostrar en lista
+        const li = document.createElement("li");
+        li.textContent = `Producto ${id} - Cantidad: ${cantidad}`;
+        document.getElementById("listaProductos").appendChild(li);
+
+        // limpiar inputs
+        document.getElementById('idProducto').value = "";
+            document.getElementById('cantidad').value = "";
+        }
+
+        // Crear venta (POST)
+        document.getElementById('ventaForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (items.length === 0) {
+            alert("Agrega al menos un producto");
+            return;
+        }
+
+        const data = { items: items };
+
+        const res = await fetch('http://localhost/api/index.php/venta/registrar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const json = await res.json();
+        alert(JSON.stringify(json));
+
+        items = []; 
+        document.getElementById("listaProductos").innerHTML = "";
+        mostrarVentas();
+    });
+
+    // Mostrar ventas (GET)
+    async function mostrarVentas() {
+        const res = await fetch('http://localhost/api/index.php/venta/mostrar');
+        const ventas = await res.json();
+
+        const tbody = document.querySelector('#tablaVentas tbody');
+        tbody.innerHTML = '';
+
+        ventas.forEach(v => {
+            const row = `
+            <tr>
+                <td>${v.idVenta}</td>
+                <td>${v.Total}</td>
+                <td>${v.IdProducto}</td>
+                <td>${v.Cantidad}</td>
+                <td>${v.Nombre ?? ''}</td>
+                <td>${v.Subtotal}</td>
+            </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+
+    // cargar ventas al inicio
+    mostrarVentas();
+    </script>
+</body>
+</html>

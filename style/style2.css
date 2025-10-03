@@ -1,0 +1,105 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #e6f2ff; /* azulito claro */
+    height: 100vh;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+h2 {
+    margin-bottom: 20px;
+    color: #0d2740;
+    font-size: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    justify-content: center;
+}
+
+
+
+.formulario {
+    background-color: #fff;
+    padding: 30px 25px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
+    width: 350px;
+    text-align: center;
+}
+
+.formulario h2 {
+    margin-bottom: 20px;
+    color: #0d2740;
+    font-size: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.formulario label {
+    text-align: left;
+    display: block;
+    margin: 5px 0 3px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.formulario input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    margin-bottom: 15px;
+}
+
+.formulario input:focus {
+    border-color: #0d2740;
+    box-shadow: 0px 0px 5px rgba(13, 39, 64, 0.3);
+}
+
+.formulario button {
+    background-color: #0d2740;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.formulario button:hover {
+    background-color: #163c61;
+}
+
+#mensaje {
+    margin-top: 10px;
+    font-size: 14px;
+    color: red;
+}
+
+.formulario a {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #0d2740;
+    font-size: 14px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.formulario a:hover {
+    color: #1a5d9b;
+}
